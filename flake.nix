@@ -4,13 +4,14 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
+  outputs = { self, nixpkgs, flake-utils }:
     {
-      nixosConfigurations.mysystem = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.container = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          (import ./configuration.nix)
-          (import ./build-tarball.nix)
+          "${nixpkgs}/nixos/modules/profiles/minimal.nix"
+          ./configuration.nix
+          ./build-tarball.nix
         ];
         specialArgs = { inherit nixpkgs; };
       };
